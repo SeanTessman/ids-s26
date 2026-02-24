@@ -282,49 +282,7 @@ Here are some remedies for overfitting:
 2. *Setting a maximum depth*: This limits the depth of the tree, preventing it from becoming too complex and overfitting the data. *A good place to start is n=3.*
     `DecisionTreeClassifier(max_depth=n)`
 
-3. *Setting minimum samples per leaf*: This sets a minimum number of samples required to be at a leaf node. This can prevent the tree from creating a branch that only applies to a small number of samples, which can lead to overfitting.
-    `DecisionTreeClassifier(min_samples_leaf=n)`
-
-To find out what number you should set for these parameters, you can use `GridSearchCV` from `sklearn`.
-```{python}
-from sklearn.model_selection import GridSearchCV
-```
-
-GridSearchCV allows you to set a range of values for specified parameters and test each combination for the best performing model.
-
-You must specify the parameters you want to test and the values you want to test for. Your parameters should be stored in a dictionary:
-```{python}
-param_grid = {
-    'max_depth': [3, 5, 10, None],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [2, 5, 10]
-    }
-```
-
-Now, you must call `GridSearchCV` and specify *the model*, *the parameter grid*, as well as the *number of cross folds* and *the scoring metric*.
-```{python}
-grid_search = GridSearchCV(
-    estimator = clf, # the model you want to test
-    param_grid = param_grid, # the parameters
-    cv = 5, # the number of cross folds
-    scoring = 'accuracy' # the scoring metric
-    )
-```
-
-Grid search must now be fit to your data, like so:
-```{python}
-grid_search.fit(X_train, y_train)
-```
-
-Grid search actually tests a lot of different feature of your model. You can find all the features being tested [here](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html). However, we only tested three parameters: max_depth, min_samples_split, and min_samples_leaf.
-```{python}
-print("Best parameters:", grid_search.best_params_)
-print("Best score:", grid_search.best_score_)
-```
-
-Now, you can create a new model including these updated parameters.
-
-4. *Changing the criterion*: This involves changing the criterion used to split the data at each node. Changing the criterion can help to reduce overfitting by making the tree less sensitive to small changes in the data.
+3. *Changing the criterion*: This involves changing the criterion used to split the data at each node. Changing the criterion can help to reduce overfitting by making the tree less sensitive to small changes in the data.
     `DecisionTreeClassifier(criterion='gini')`
     * *gini impurity*: the probability of misclassifying a randomly chosen element from the dataset
     * *entropy*: the average amount of information needed to classify an element from the dataset
@@ -336,7 +294,7 @@ Now, you can create a new model including these updated parameters.
     * *absolute_error*: the mean absolute error between the predicted values and the true values
     * *poisson*: the mean Poisson deviance between the predicted values and the true values, used for count data
 
-5. *Using ensemble methods*: Ensemble methods (ei, random forests) combine multiple decision trees to make predictions, thus generalizing the model and reducing the risk of overfitting.
+4. *Using ensemble methods*: Ensemble methods (ei, random forests) combine multiple decision trees to make predictions, thus generalizing the model and reducing the risk of overfitting.
 
 
 **Unbalanced datasets**
